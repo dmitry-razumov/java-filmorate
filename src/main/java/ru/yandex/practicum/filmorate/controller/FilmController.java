@@ -34,7 +34,7 @@ public class FilmController {
 
     @PutMapping
     public Film update(@RequestBody Film film) throws ValidationException {
-        if(!films.containsKey(film.getId())) {
+        if (!films.containsKey(film.getId())) {
             log.error("фильм с id = {} не существует", film);
             throw new ValidationException("фильм с id = " + film.getId() + " не существует");
         }
@@ -50,8 +50,7 @@ public class FilmController {
             throw new ValidationException("Имя фильма не должно быть пустым");
         }
         if (film.getDescription().length() > MAX_DESCRIPTION_LENGTH) {
-            log.error("длина описания больше {} и равна {}", MAX_DESCRIPTION_LENGTH
-                    , film.getDescription().length());
+            log.error("длина описания больше {} и равна {}", MAX_DESCRIPTION_LENGTH, film.getDescription().length());
             throw new ValidationException("Длина описания фильма не должна быть больше "
                     + MAX_DESCRIPTION_LENGTH + " символов");
         }
@@ -59,7 +58,7 @@ public class FilmController {
             log.error("дата релиза раньше допустимой - {}", film.getReleaseDate());
             throw new ValidationException("Дата релиза раньше допустимой");
         }
-        if (film.getDuration() <= 0 ) {
+        if (film.getDuration() <= 0) {
             log.error("длительность должна быть положительной, а равна {}", film.getDuration());
             throw new ValidationException("Продолжительность фильма должна быть положительной");
         }
