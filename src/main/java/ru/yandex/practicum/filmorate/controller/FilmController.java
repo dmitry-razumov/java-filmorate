@@ -16,7 +16,7 @@ public class FilmController {
     private final HashMap<Long, Film> films = new HashMap<>();
     private long id = 1;
     private static final int MAX_DESCRIPTION_LENGTH = 200;
-    private static final LocalDate MIN_RELEASE_DATE = LocalDate.of(1985, 12, 28);
+    private static final LocalDate MIN_RELEASE_DATE = LocalDate.of(1895, 12, 28);
 
     @GetMapping
     public List<Film> getAll() {
