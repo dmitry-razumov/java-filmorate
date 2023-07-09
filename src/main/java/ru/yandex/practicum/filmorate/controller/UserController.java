@@ -32,7 +32,7 @@ public class UserController {
 
     @PutMapping
     public User update(@RequestBody User user) throws ValidationException {
-        if(!users.containsKey(user.getId())) {
+        if (!users.containsKey(user.getId())) {
             log.error("user с id = {} не существует", user.getId());
             throw new ValidationException("пользователь с id = " + user.getId() + " не существует");
         }
