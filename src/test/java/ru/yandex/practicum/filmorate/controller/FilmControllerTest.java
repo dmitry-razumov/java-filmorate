@@ -29,8 +29,8 @@ class FilmControllerTest {
     void shouldFailEmptyName() {
         film.setName("");
 
-        assertThrows(ValidationException.class, () -> filmController.create(film)
-                , "создался фильм без имени");
+        assertThrows(ValidationException.class, () -> filmController.create(film),
+                "создался фильм без имени");
     }
 
     @Test
