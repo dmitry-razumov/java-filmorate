@@ -15,8 +15,8 @@ class UserControllerTest {
     @BeforeEach
     void setUp() {
         userController = new UserController();
-        user = new User( 1, "mail@mail.ru", "dolore"
-                , "Nick Name", LocalDate.of(1946, 8, 20));
+        user = new User(1, "mail@mail.ru", "dolore",
+                "Nick Name", LocalDate.of(1946, 8, 20));
     }
 
     @Test
@@ -42,24 +42,24 @@ class UserControllerTest {
     void shouldFailLogin() {
         user.setLogin("dolore ullamco");
 
-        assertThrows(ValidationException.class, () -> userController.create(user)
-                , "создался пользователь с пробелом в login");
+        assertThrows(ValidationException.class, () -> userController.create(user),
+                "создался пользователь с пробелом в login");
     }
 
     @Test
     void shouldFailEmail() {
         user.setEmail("это-неправильный?эмейл@");
 
-        assertThrows(ValidationException.class, () -> userController.create(user)
-                , "создался пользователь с недопустимым email");
+        assertThrows(ValidationException.class, () -> userController.create(user),
+                "создался пользователь с недопустимым email");
     }
 
     @Test
     void shouldFailBirthday() {
         user.setBirthday(LocalDate.of(2030,1,10));
 
-        assertThrows(ValidationException.class, () -> userController.create(user)
-                , "создался пользователь с будущей датой рождения");
+        assertThrows(ValidationException.class, () -> userController.create(user),
+                "создался пользователь с будущей датой рождения");
     }
 
     @Test
@@ -75,8 +75,8 @@ class UserControllerTest {
         userController.create(user);
         user.setId(99);
 
-        assertThrows(ValidationException.class, () -> userController.update(user)
-                , "обновился пользователь с несуществующим id");
+        assertThrows(ValidationException.class, () -> userController.update(user),
+                "обновился пользователь с несуществующим id");
     }
 
     @Test

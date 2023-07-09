@@ -15,9 +15,9 @@ class FilmControllerTest {
     @BeforeEach
     void setUp() {
         filmController = new FilmController();
-        film = new Film(  1, "nisi eiusmod"
-                , "adipisicing", LocalDate.of(1997, 3, 25)
-                , 100);
+        film = new Film(1, "nisi eiusmod",
+                "adipisicing", LocalDate.of(1997, 3, 25),
+                100);
     }
 
     @Test
@@ -39,29 +39,29 @@ class FilmControllerTest {
                 " Здесь они хотят разыскать господина Огюста Куглова, который задолжал им деньги, " +
                 "а именно 20 миллионов. о Куглов, который за время «своего отсутствия», стал кандидатом Коломбани.");
 
-        assertThrows(ValidationException.class, () -> filmController.create(film)
-                , "создался фильм c длинной описания больше допустимой");
+        assertThrows(ValidationException.class, () -> filmController.create(film),
+                "создался фильм c длинной описания больше допустимой");
     }
 
     @Test
     void shouldFailRelease() {
         film.setReleaseDate(LocalDate.of(1890, 3, 25));
 
-        assertThrows(ValidationException.class, () -> filmController.create(film)
-                , "создался фильм c датой релиза ранее допустимой");
+        assertThrows(ValidationException.class, () -> filmController.create(film),
+                "создался фильм c датой релиза ранее допустимой");
     }
 
     @Test
     void shouldFailDuration() {
         film.setDuration(0);
 
-        assertThrows(ValidationException.class, () -> filmController.create(film)
-                , "создался фильм c длительностью 0");
+        assertThrows(ValidationException.class, () -> filmController.create(film),
+                "создался фильм c длительностью 0");
 
         film.setDuration(-100);
 
-        assertThrows(ValidationException.class, () -> filmController.create(film)
-                , "создался фильм c отрицательной длительностью");
+        assertThrows(ValidationException.class, () -> filmController.create(film),
+                "создался фильм c отрицательной длительностью");
 
     }
 
@@ -78,8 +78,8 @@ class FilmControllerTest {
         filmController.create(film);
         film.setId(99);
 
-        assertThrows(ValidationException.class, () -> filmController.update(film)
-                , "обновился фильм с несуществующим id");
+        assertThrows(ValidationException.class, () -> filmController.update(film),
+                "обновился фильм с несуществующим id");
     }
 
     @Test
