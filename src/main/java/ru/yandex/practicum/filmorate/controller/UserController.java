@@ -4,7 +4,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.exception.ValidationException;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
-import java.time.LocalDate;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@RequestBody User user) throws ValidationException {
+    public User create(@RequestBody @Valid User user) {
         validateUser(user);
         user.setId(id++);
         users.put(user.getId(), user);
@@ -31,9 +31,8 @@ public class UserController {
     }
 
     @PutMapping
-    public User update(@RequestBody User user) throws ValidationException {
+    public User update(@RequestBody @Valid User user) {
         if (!users.containsKey(user.getId())) {
-            log.error("user с id = {} не существует", user.getId());
             throw new ValidationException("пользователь с id = " + user.getId() + " не существует");
         }
         validateUser(user);
@@ -42,30 +41,10 @@ public class UserController {
         return user;
     }
 
-    private void validateUser(User user) throws ValidationException {
-        if (user.getEmail().isBlank()) {
-            log.error("email не должен быть пустым");
-            throw new ValidationException("email не должен быть пустым");
-        }
-        if (!user.getEmail().matches("[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,4}")) {
-            log.error("недопустимый формат email - {}", user.getEmail());
-            throw new ValidationException("недопустимый формат email");
-        }
-        if (user.getLogin().isEmpty()) {
-            log.error("login не должен быть пустым");
-            throw new ValidationException("login не должен быть пустым");
-        }
-        if (user.getLogin().contains(" ")) {
-            log.error("login не должeн содержать пробелов - {}", user.getLogin());
-            throw new ValidationException("login не должен содержать пробелы");
-        }
+    private void validateUser(User user) {
         if (user.getName() == null || user.getName().isBlank()) {
             log.info("имя не задано, в качестве имени будет использован login");
             user.setName(user.getLogin());
-        }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.error("дата рождения не может быть в будущем - {}", user.getBirthday());
-            throw new ValidationException("дата рождения не может быть в будущем");
         }
     }
 }

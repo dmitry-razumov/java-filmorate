@@ -1,15 +1,23 @@
 package ru.yandex.practicum.filmorate.model;
 
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import javax.validation.constraints.*;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 public class User {
     private long id;
+    @NotEmpty(message = "email не должен быть пустым или null")
+    @NotBlank(message = "email не должен быть пробелом или null")
+    @Email(message = "недопустимый формат email")
     private String email;
+    @NotBlank(message = "login не должен быть пробелом или null")
+    @Pattern(regexp = "^[a-zA-Z0-9!@#$%^&*]{1,}$", message = "недопустимые символы в login")
     private String login;
     private String name;
+    @NotNull
+    @PastOrPresent(message = "дата рождения не может быть в будущем")
     private LocalDate birthday;
 }
