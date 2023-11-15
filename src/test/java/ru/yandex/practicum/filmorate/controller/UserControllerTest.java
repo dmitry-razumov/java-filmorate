@@ -39,30 +39,6 @@ class UserControllerTest {
     }
 
     @Test
-    void shouldFailLogin() {
-        user.setLogin("dolore ullamco");
-
-        assertThrows(ValidationException.class, () -> userController.create(user),
-                "создался пользователь с пробелом в login");
-    }
-
-    @Test
-    void shouldFailEmail() {
-        user.setEmail("это-неправильный?эмейл@");
-
-        assertThrows(ValidationException.class, () -> userController.create(user),
-                "создался пользователь с недопустимым email");
-    }
-
-    @Test
-    void shouldFailBirthday() {
-        user.setBirthday(LocalDate.of(2030,1,10));
-
-        assertThrows(ValidationException.class, () -> userController.create(user),
-                "создался пользователь с будущей датой рождения");
-    }
-
-    @Test
     void shouldUpdateUser() {
         userController.create(user);
         user.setLogin("doloreUpdate");

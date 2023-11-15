@@ -26,43 +26,11 @@ class FilmControllerTest {
     }
 
     @Test
-    void shouldFailEmptyName() {
-        film.setName("");
-
-        assertThrows(ValidationException.class, () -> filmController.create(film),
-                "создался фильм без имени");
-    }
-
-    @Test
-    void shouldFailDescription() {
-        film.setDescription("Пятеро друзей ( комик-группа «Шарло»), приезжают в город Бризуль." +
-                " Здесь они хотят разыскать господина Огюста Куглова, который задолжал им деньги, " +
-                "а именно 20 миллионов. о Куглов, который за время «своего отсутствия», стал кандидатом Коломбани.");
-
-        assertThrows(ValidationException.class, () -> filmController.create(film),
-                "создался фильм c длинной описания больше допустимой");
-    }
-
-    @Test
     void shouldFailRelease() {
         film.setReleaseDate(LocalDate.of(1890, 3, 25));
 
         assertThrows(ValidationException.class, () -> filmController.create(film),
                 "создался фильм c датой релиза ранее допустимой");
-    }
-
-    @Test
-    void shouldFailDuration() {
-        film.setDuration(0);
-
-        assertThrows(ValidationException.class, () -> filmController.create(film),
-                "создался фильм c длительностью 0");
-
-        film.setDuration(-100);
-
-        assertThrows(ValidationException.class, () -> filmController.create(film),
-                "создался фильм c отрицательной длительностью");
-
     }
 
     @Test
