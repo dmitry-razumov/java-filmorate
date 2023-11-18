@@ -1,61 +1,95 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.service.exception.ValidationException;
-import java.time.LocalDate;
-import org.junit.jupiter.api.BeforeEach;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.HashSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-class FilmControllerTest {
+@SpringBootTest
+@AutoConfigureMockMvc
+public class FilmControllerTest {
+    @Autowired
     private FilmController filmController;
-    Film film;
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    @BeforeEach
-    void setUp() {
-        filmController = new FilmController();
-        film = new Film(1, "nisi eiusmod",
-                "adipisicing", LocalDate.of(1997, 3, 25),
-                100);
+    @Test
+    void ShouldBeSuccessValidationsForValidFilmData() throws Exception {
+        Film film = Film.builder()
+                .name("nisi eiusmod")
+                .description("adipisicing")
+                .releaseDate(LocalDate.of(1967, 3,25))
+                .duration(100)
+                .likes(new HashSet<>())
+                .build();
+        String validFilm = objectMapper.writeValueAsString(film);
+
+        mockMvc.perform(post("/films")
+                .contentType("application/json")
+                .content(validFilm)).andDo(h->
+                assertEquals(200, h.getResponse().getStatus()));
+
+        mockMvc.perform(get("/films")
+                .contentType("application/json")).andDo(h->
+                assertEquals(200, h.getResponse().getStatus()));
+
+        mockMvc.perform(get("/films/1")
+                .contentType("application/json")).andDo(h ->
+                assertEquals(200, h.getResponse().getStatus()));
+
+        mockMvc.perform(get("/films/2")
+                .contentType("application/json")).andDo(h ->
+                assertEquals(404, h.getResponse().getStatus()));
+
+        mockMvc.perform(get("/films/popular")
+                .contentType("application/json")).andDo(h ->
+                assertEquals(200, h.getResponse().getStatus()));
+
+        mockMvc.perform(delete("/films/1")
+                .contentType("application/json")).andDo(h ->
+                assertEquals(200, h.getResponse().getStatus()));
+
+        assertEquals(Collections.EMPTY_LIST, filmController.getAll());
     }
 
     @Test
-    void shouldCreateFilm() {
-        assertEquals(filmController.create(film).getId(), 1);
+    void ShouldBe400ResponseForInvalidFilmData() throws Exception {
+        String inValidFilm = objectMapper.writeValueAsString(Film.builder()
+                .name("nisi eiusmod")
+                .description("adipisicing")
+                .releaseDate(LocalDate.of(1967, 3,25))
+                .duration(-100)
+                .likes(new HashSet<>())
+                .build()
+        );
+        mockMvc.perform(post("/films")
+                        .contentType("application/json")
+                        .content(inValidFilm))
+                .andDo(h -> assertEquals(400, h.getResponse().getStatus()));
     }
 
     @Test
-    void shouldFailRelease() {
-        film.setReleaseDate(LocalDate.of(1890, 3, 25));
-
-        assertThrows(ValidationException.class, () -> filmController.create(film),
-                "создался фильм c датой релиза ранее допустимой");
+    void ShouldBe400ResponseForEmptyBodyRequest() throws Exception {
+        mockMvc.perform(post("/films")
+                        .contentType("application/json")
+                        .content(""))
+                .andDo(h -> assertEquals(400, h.getResponse().getStatus()));
     }
 
     @Test
-    void shouldUpdateFilm() {
-        filmController.create(film);
-        film.setName("Film Updated");
-
-        assertEquals(film, filmController.update(film));
-    }
-
-    @Test
-    void shouldFailUpdateUnknownFilm() {
-        filmController.create(film);
-        film.setId(99);
-
-        assertThrows(ValidationException.class, () -> filmController.update(film),
-                "обновился фильм с несуществующим id");
-    }
-
-    @Test
-    void shouldGetAllFilms() {
-        filmController.create(film);
-        film.setName("secondFilm");
-        filmController.create(film);
-
-        assertEquals(filmController.getAll().size(), 2);
+    void ShouldBe404ResponseForWrongURI() throws Exception {
+        mockMvc.perform(get("/film")
+                        .contentType("application/json"))
+                .andDo(h -> assertEquals(404, h.getResponse().getStatus()));
     }
 }
