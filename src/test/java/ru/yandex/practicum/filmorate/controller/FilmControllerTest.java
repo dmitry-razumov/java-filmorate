@@ -37,27 +37,27 @@ public class FilmControllerTest {
         mockMvc.perform(post("/films")
                 .contentType("application/json")
                 .content(validFilm))
-                .andDo(h->assertEquals(200, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(200, h.getResponse().getStatus()));
 
         mockMvc.perform(get("/films")
                 .contentType("application/json"))
-                .andDo(h->assertEquals(200, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(200, h.getResponse().getStatus()));
 
         mockMvc.perform(get("/films/1")
                 .contentType("application/json"))
-                .andDo(h->assertEquals(200, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(200, h.getResponse().getStatus()));
 
         mockMvc.perform(get("/films/2")
                 .contentType("application/json"))
-                .andDo(h->assertEquals(404, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(404, h.getResponse().getStatus()));
 
         mockMvc.perform(get("/films/popular")
                 .contentType("application/json"))
-                .andDo(h->assertEquals(200, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(200, h.getResponse().getStatus()));
 
         mockMvc.perform(delete("/films/1")
                 .contentType("application/json"))
-                .andDo(h->assertEquals(200, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(200, h.getResponse().getStatus()));
 
         assertEquals(Collections.EMPTY_LIST, filmController.getAll());
     }
@@ -75,7 +75,7 @@ public class FilmControllerTest {
         mockMvc.perform(post("/films")
                         .contentType("application/json")
                         .content(inValidFilm))
-                .andDo(h->assertEquals(400, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(400, h.getResponse().getStatus()));
     }
 
     @Test
@@ -83,13 +83,13 @@ public class FilmControllerTest {
         mockMvc.perform(post("/films")
                         .contentType("application/json")
                         .content(""))
-                .andDo(h->assertEquals(400, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(400, h.getResponse().getStatus()));
     }
 
     @Test
     void shouldBe404ResponseForWrongURI() throws Exception {
         mockMvc.perform(get("/film")
                         .contentType("application/json"))
-                .andDo(h->assertEquals(404, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(404, h.getResponse().getStatus()));
     }
 }
