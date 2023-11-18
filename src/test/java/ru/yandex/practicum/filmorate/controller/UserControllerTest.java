@@ -37,24 +37,24 @@ public class UserControllerTest {
 
         mockMvc.perform(post("/users")
                 .contentType("application/json")
-                .content(validUser)).andDo(h->
-                assertEquals(200, h.getResponse().getStatus()));
+                .content(validUser))
+                .andDo(h->assertEquals(200, h.getResponse().getStatus()));
 
         mockMvc.perform(get("/users")
-                .contentType("application/json")).andDo(h->
-                assertEquals(200, h.getResponse().getStatus()));
+                .contentType("application/json"))
+                .andDo(h->assertEquals(200, h.getResponse().getStatus()));
 
         mockMvc.perform(get("/users/1")
-                .contentType("application/json")).andDo(h->
-                assertEquals(200, h.getResponse().getStatus()));
+                .contentType("application/json"))
+                .andDo(h->assertEquals(200, h.getResponse().getStatus()));
 
         mockMvc.perform(get("/users/2")
-                .contentType("application/json")).andDo(h->
-                assertEquals(404, h.getResponse().getStatus()));
+                .contentType("application/json"))
+                .andDo(h->assertEquals(404, h.getResponse().getStatus()));
 
         mockMvc.perform(delete("/users/1")
-                .contentType("application/json")).andDo(h->
-                assertEquals(200, h.getResponse().getStatus()));
+                .contentType("application/json"))
+                .andDo(h->assertEquals(200, h.getResponse().getStatus()));
 
         assertEquals(Collections.EMPTY_LIST, userController.getAll());
     }
