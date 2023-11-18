@@ -38,23 +38,23 @@ public class UserControllerTest {
         mockMvc.perform(post("/users")
                 .contentType("application/json")
                 .content(validUser))
-                .andDo(h->assertEquals(200, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(200, h.getResponse().getStatus()));
 
         mockMvc.perform(get("/users")
                 .contentType("application/json"))
-                .andDo(h->assertEquals(200, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(200, h.getResponse().getStatus()));
 
         mockMvc.perform(get("/users/1")
                 .contentType("application/json"))
-                .andDo(h->assertEquals(200, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(200, h.getResponse().getStatus()));
 
         mockMvc.perform(get("/users/2")
                 .contentType("application/json"))
-                .andDo(h->assertEquals(404, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(404, h.getResponse().getStatus()));
 
         mockMvc.perform(delete("/users/1")
                 .contentType("application/json"))
-                .andDo(h->assertEquals(200, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(200, h.getResponse().getStatus()));
 
         assertEquals(Collections.EMPTY_LIST, userController.getAll());
     }
@@ -70,7 +70,7 @@ public class UserControllerTest {
         mockMvc.perform(post("/users")
                 .contentType("application/json")
                 .content(invalidUser))
-                .andDo(h->assertEquals(400, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(400, h.getResponse().getStatus()));
     }
 
     @Test
@@ -78,13 +78,13 @@ public class UserControllerTest {
         mockMvc.perform(post("/users")
                 .contentType("application/json")
                 .content(""))
-                .andDo(h->assertEquals(400, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(400, h.getResponse().getStatus()));
     }
 
     @Test
     void shouldBe404ResponseForWrongURI() throws Exception {
         mockMvc.perform(get("/user")
                 .contentType("application/json"))
-                .andDo(h->assertEquals(404, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(404, h.getResponse().getStatus()));
     }
 }
