@@ -44,14 +44,14 @@ public class UserController {
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public void addFriendToUser(@PathVariable @Exist(message = "user") long id
-            , @PathVariable @Exist(message = "user") long friendId) {
+    public void addFriendToUser(@PathVariable @Exist(message = "user") long id,
+                                @PathVariable @Exist(message = "user") long friendId) {
         userService.addFriend(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public void deleteFriend(@PathVariable @Exist(message = "user") long id
-            , @PathVariable @Exist(message = "user") long friendId) {
+    public void deleteFriend(@PathVariable @Exist(message = "user") long id,
+                             @PathVariable @Exist(message = "user") long friendId) {
         userService.deleteFriend(id, friendId);
     }
 
@@ -61,8 +61,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public List<User> getUserCommonFriends(@PathVariable @Exist(message = "user") long id
-            , @PathVariable @Exist(message = "user") long otherId) {
+    public List<User> getUserCommonFriends(@PathVariable @Exist(message = "user") long id,
+                                           @PathVariable @Exist(message = "user") long otherId) {
         return userService.getCommonFriends(id, otherId);
     }
 }
