@@ -26,7 +26,7 @@ public class UserControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void ShouldBeSuccessValidationsForValidUserData() throws Exception {
+    void shouldBeSuccessValidationsForValidUserData() throws Exception {
         User user = User.builder()
                 .login("dolore")
                 .name("Nick Name")
@@ -60,7 +60,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void ShouldBe400ResponseForInvalidUserData() throws Exception {
+    void shouldBe400ResponseForInvalidUserData() throws Exception {
         String invalidUser = objectMapper.writeValueAsString(User.builder()
                 .login("dolore")
                 .name("Nick Name")
@@ -70,21 +70,21 @@ public class UserControllerTest {
         mockMvc.perform(post("/users")
                 .contentType("application/json")
                 .content(invalidUser))
-                .andDo(h -> assertEquals(400, h.getResponse().getStatus()));
+                .andDo(h->assertEquals(400, h.getResponse().getStatus()));
     }
 
     @Test
-    void ShouldBe400ResponseForEmptyBodyRequest() throws Exception {
+    void shouldBe400ResponseForEmptyBodyRequest() throws Exception {
         mockMvc.perform(post("/users")
                 .contentType("application/json")
                 .content(""))
-                .andDo(h -> assertEquals(400, h.getResponse().getStatus()));
+                .andDo(h->assertEquals(400, h.getResponse().getStatus()));
     }
 
     @Test
-    void ShouldBe404ResponseForWrongURI() throws Exception {
+    void shouldBe404ResponseForWrongURI() throws Exception {
         mockMvc.perform(get("/user")
                 .contentType("application/json"))
-                .andDo(h -> assertEquals(404, h.getResponse().getStatus()));
+                .andDo(h->assertEquals(404, h.getResponse().getStatus()));
     }
 }

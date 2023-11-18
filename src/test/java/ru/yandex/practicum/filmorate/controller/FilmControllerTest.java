@@ -24,7 +24,7 @@ public class FilmControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void ShouldBeSuccessValidationsForValidFilmData() throws Exception {
+    void shouldBeSuccessValidationsForValidFilmData() throws Exception {
         Film film = Film.builder()
                 .name("nisi eiusmod")
                 .description("adipisicing")
@@ -44,26 +44,26 @@ public class FilmControllerTest {
                 assertEquals(200, h.getResponse().getStatus()));
 
         mockMvc.perform(get("/films/1")
-                .contentType("application/json")).andDo(h ->
+                .contentType("application/json")).andDo(h->
                 assertEquals(200, h.getResponse().getStatus()));
 
         mockMvc.perform(get("/films/2")
-                .contentType("application/json")).andDo(h ->
+                .contentType("application/json")).andDo(h->
                 assertEquals(404, h.getResponse().getStatus()));
 
         mockMvc.perform(get("/films/popular")
-                .contentType("application/json")).andDo(h ->
+                .contentType("application/json")).andDo(h->
                 assertEquals(200, h.getResponse().getStatus()));
 
         mockMvc.perform(delete("/films/1")
-                .contentType("application/json")).andDo(h ->
+                .contentType("application/json")).andDo(h->
                 assertEquals(200, h.getResponse().getStatus()));
 
         assertEquals(Collections.EMPTY_LIST, filmController.getAll());
     }
 
     @Test
-    void ShouldBe400ResponseForInvalidFilmData() throws Exception {
+    void shouldBe400ResponseForInvalidFilmData() throws Exception {
         String inValidFilm = objectMapper.writeValueAsString(Film.builder()
                 .name("nisi eiusmod")
                 .description("adipisicing")
@@ -75,21 +75,21 @@ public class FilmControllerTest {
         mockMvc.perform(post("/films")
                         .contentType("application/json")
                         .content(inValidFilm))
-                .andDo(h -> assertEquals(400, h.getResponse().getStatus()));
+                .andDo(h->assertEquals(400, h.getResponse().getStatus()));
     }
 
     @Test
-    void ShouldBe400ResponseForEmptyBodyRequest() throws Exception {
+    void shouldBe400ResponseForEmptyBodyRequest() throws Exception {
         mockMvc.perform(post("/films")
                         .contentType("application/json")
                         .content(""))
-                .andDo(h -> assertEquals(400, h.getResponse().getStatus()));
+                .andDo(h->assertEquals(400, h.getResponse().getStatus()));
     }
 
     @Test
-    void ShouldBe404ResponseForWrongURI() throws Exception {
+    void shouldBe404ResponseForWrongURI() throws Exception {
         mockMvc.perform(get("/film")
                         .contentType("application/json"))
-                .andDo(h -> assertEquals(404, h.getResponse().getStatus()));
+                .andDo(h->assertEquals(404, h.getResponse().getStatus()));
     }
 }
