@@ -1,12 +1,15 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class User {
     private long id;
     @NotEmpty(message = "email не должен быть пустым или null")
@@ -20,4 +23,5 @@ public class User {
     @NotNull
     @PastOrPresent(message = "дата рождения не может быть в будущем")
     private LocalDate birthday;
+    private Set<Long> friends = new HashSet<>();
 }
