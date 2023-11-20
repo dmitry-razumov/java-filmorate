@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.storage;
 
 import java.util.List;
 
-public interface Storage <T> {
+public interface Storage<T> {
     T create(T o);
 
     T update(T o);
