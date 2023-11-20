@@ -24,13 +24,10 @@ public class Film {
     @Size(max = MAX_DESCRIPTION_LENGTH, message = "Длина описания фильма не должна быть больше "
             + MAX_DESCRIPTION_LENGTH + " символов")
     private String description;
-    @NotNull
+    @NotNull(message = "Дата релиза фильма не должна быть пустой")
     private LocalDate releaseDate;
-    @Positive
+    @Positive(message = "Длительность фильма должна быть больше 0")
     private long duration;
     Set<Long> likes = new HashSet<>();
-
-    public int getNumberOfLikes() {
-        return likes.size();
-    }
+    private int rate = 0;
 }

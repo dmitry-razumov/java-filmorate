@@ -20,49 +20,58 @@ public class UserController {
 
     @GetMapping
     public List<User> getAll() {
+        log.info("GET /users");
         return userService.getAll();
     }
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable @Exist(message = "user") long id) {
-        return userService.findUserById(id);
+        log.info("GET /users/{" + id + "}");
+        return userService.getUserById(id);
     }
 
     @PostMapping
     public User create(@RequestBody @Valid User user) {
+        log.info("POST /users with body " + user);
         return userService.create(user);
     }
 
     @PutMapping
     public User update(@RequestBody @Valid @Exist(message = "user") User user) {
+        log.info("UPDATE /users with body " + user);
         return userService.update(user);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable @Exist(message = "user") long id) {
+        log.info("DELETE /users/{" + id + "}");
         userService.delete(id);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public void addFriendToUser(@PathVariable @Exist(message = "user") long id,
-                                @PathVariable @Exist(message = "user") long friendId) {
+    public void addFriend(@PathVariable @Exist(message = "user") long id,
+                          @PathVariable @Exist(message = "user") long friendId) {
+        log.info("PUT /users/{" + id + "}/friends/{" + friendId + "}");
         userService.addFriend(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
     public void deleteFriend(@PathVariable @Exist(message = "user") long id,
                              @PathVariable @Exist(message = "user") long friendId) {
+        log.info("DELETE /users/{" + id + "}/friends/{" + friendId + "}");
         userService.deleteFriend(id, friendId);
     }
 
     @GetMapping("/{id}/friends")
     public List<User> getUserFriends(@PathVariable @Exist(message = "user") long id) {
+        log.info("GET /users/{" + id + "}/friends");
         return userService.getUserFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public List<User> getUserCommonFriends(@PathVariable @Exist(message = "user") long id,
-                                           @PathVariable @Exist(message = "user") long otherId) {
+    public List<User> getCommonFriends(@PathVariable @Exist(message = "user") long id,
+                                       @PathVariable @Exist(message = "user") long otherId) {
+        log.info("GET /users/{" + id + "}/friends/common/{" + otherId + "}");
         return userService.getCommonFriends(id, otherId);
     }
 }

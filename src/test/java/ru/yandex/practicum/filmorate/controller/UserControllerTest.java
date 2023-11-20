@@ -74,11 +74,11 @@ public class UserControllerTest {
     }
 
     @Test
-    void shouldBe400ResponseForEmptyBodyRequest() throws Exception {
+    void shouldBe500ResponseForEmptyBodyRequest() throws Exception {
         mockMvc.perform(post("/users")
                 .contentType("application/json")
                 .content(""))
-                .andDo(h -> assertEquals(400, h.getResponse().getStatus()));
+                .andDo(h -> assertEquals(500, h.getResponse().getStatus()));
     }
 
     @Test

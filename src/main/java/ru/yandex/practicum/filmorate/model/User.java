@@ -20,7 +20,7 @@ public class User {
     @Pattern(regexp = "^[a-zA-Z0-9!@#$%^&*]{1,}$", message = "недопустимые символы в login")
     private String login;
     private String name;
-    @NotNull
+    @NotNull(message = "дата рождения не может быть пустой")
     @PastOrPresent(message = "дата рождения не может быть в будущем")
     private LocalDate birthday;
     private Set<Long> friends = new HashSet<>();

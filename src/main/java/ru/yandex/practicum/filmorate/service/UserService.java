@@ -29,8 +29,8 @@ public class UserService {
         userStorage.delete(id);
     }
 
-    public User findUserById(long id) {
-        return userStorage.findUserById(id);
+    public User getUserById(long id) {
+        return userStorage.getUserById(id);
     }
 
     public List<User> getAll() {
@@ -38,27 +38,39 @@ public class UserService {
     }
 
     public void addFriend(long id, long friendId) {
-        User user = findUserById(id);
-        User friend = findUserById(friendId);
+        User user = getUserById(id);
+        User friend = getUserById(friendId);
         user.getFriends().add(friendId);
+        update(user);
+        log.info("пользователю с id - " + id + " добавлен id друга - " + friendId + " user=" + user);
         friend.getFriends().add(id);
+        update(friend);
+        log.info("другу с id - " + friendId + " добавлен id пользователя - " + id + " friend=" + friend);
     }
 
     public void deleteFriend(long id, long friendId) {
-        findUserById(id).getFriends().remove(friendId);
-        findUserById(friendId).getFriends().remove(id);
+        User user = getUserById(id);
+        user.getFriends().remove(friendId);
+        update(user);
+        log.info("у пользователя с id - " + id + " удален id друга - " + friendId  + " user=" + user);
+        User friend = getUserById(friendId);
+        friend.getFriends().remove(id);
+        update(user);
+        log.info("у друга с id - " + friendId + " удален id пользователя - " + id + " friend=" + friend);
     }
 
     public List<User> getUserFriends(long id) {
-        Set<Long> ids = findUserById(id).getFriends();
+        Set<Long> ids = getUserById(id).getFriends();
+        log.info("получены друзья пользователя с id - " + id);
         return getAll().stream()
                 .filter(user -> ids.contains(user.getId()))
                 .collect(Collectors.toList());
     }
 
     public List<User> getCommonFriends(long id, long otherId) {
+        log.info("получены общие друзья пользователя с id - " + id + " и пользователя с id - " + otherId);
         return getUserFriends(id).stream()
-                .filter(user -> userStorage.findUserById(otherId).getFriends().contains(user.getId()))
+                .filter(user -> userStorage.getUserById(otherId).getFriends().contains(user.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -67,5 +79,6 @@ public class UserService {
             log.info("имя не задано, в качестве имени будет использован login");
             user.setName(user.getLogin());
         }
+        log.info("имя пользователя не пустое");
     }
 }

@@ -30,16 +30,19 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public void delete(long id) {
+        log.info("удален фильм с id - {}", id);
         films.remove(id);
     }
 
     @Override
-    public Film findFilmById(long id) {
+    public Film getFilmById(long id) {
+        log.info("получен фильм c id - {}", id);
         return films.get(id);
     }
 
     @Override
     public List<Film> getAll() {
+        log.info("получены все фильмы");
         return new ArrayList<>(films.values());
     }
 }

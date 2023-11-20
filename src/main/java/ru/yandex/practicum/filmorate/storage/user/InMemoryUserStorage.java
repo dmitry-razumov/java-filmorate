@@ -30,16 +30,19 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public void delete(long id) {
+        log.info("удален пользователь с id - {}", id);
         users.remove(id);
     }
 
     @Override
-    public User findUserById(long id) {
+    public User getUserById(long id) {
+        log.info("получен пользователь c id - {}", id);
         return users.get(id);
     }
 
     @Override
     public List<User> getAll() {
+        log.info("получены все пользователи");
         return new ArrayList<>(users.values());
     }
 }
