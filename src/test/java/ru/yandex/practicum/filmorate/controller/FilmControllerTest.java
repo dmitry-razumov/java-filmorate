@@ -36,7 +36,7 @@ public class FilmControllerTest {
                 .duration(100)
                 .likes(new HashSet<>())
                 .genres(new LinkedHashSet<>())
-                .mpa(new Mpa( 1, "G"))
+                .mpa(new Mpa(1, "G"))
                 .build();
         String validFilm = objectMapper.writeValueAsString(film);
 
