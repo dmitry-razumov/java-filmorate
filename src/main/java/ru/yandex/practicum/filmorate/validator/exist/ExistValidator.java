@@ -32,6 +32,7 @@ public class ExistValidator implements ConstraintValidator<Exist, Object> {
         this.mpaStorage = mpaStorage;
         this.genreStorage = genreStorage;
     }
+
     @Override
     public void initialize(Exist annotation) {
         this.type = annotation.message();
