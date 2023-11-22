@@ -25,9 +25,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable @Exist(message = "user") long id) {
+    public User getById(@PathVariable @Exist(message = "user") long id) {
         log.info("GET /users/{" + id + "}");
-        return userService.getUserById(id);
+        return userService.getById(id);
     }
 
     @PostMapping

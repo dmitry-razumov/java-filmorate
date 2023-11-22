@@ -29,8 +29,8 @@ public class UserService {
         userStorage.delete(id);
     }
 
-    public User getUserById(long id) {
-        return userStorage.getUserById(id);
+    public User getById(long id) {
+        return userStorage.getById(id);
     }
 
     public List<User> getAll() {
@@ -38,8 +38,8 @@ public class UserService {
     }
 
     public void addFriend(long id, long friendId) {
-        User user = getUserById(id);
-        User friend = getUserById(friendId);
+        User user = getById(id);
+        User friend = getById(friendId);
         user.getFriends().add(friendId);
         update(user);
         log.info("пользователю с id - " + id + " добавлен id друга - " + friendId + " user=" + user);
@@ -49,18 +49,18 @@ public class UserService {
     }
 
     public void deleteFriend(long id, long friendId) {
-        User user = getUserById(id);
+        User user = getById(id);
         user.getFriends().remove(friendId);
         update(user);
         log.info("у пользователя с id - " + id + " удален id друга - " + friendId  + " user=" + user);
-        User friend = getUserById(friendId);
+        User friend = getById(friendId);
         friend.getFriends().remove(id);
         update(user);
         log.info("у друга с id - " + friendId + " удален id пользователя - " + id + " friend=" + friend);
     }
 
     public List<User> getUserFriends(long id) {
-        Set<Long> ids = getUserById(id).getFriends();
+        Set<Long> ids = getById(id).getFriends();
         log.info("получены друзья пользователя с id - " + id);
         return getAll().stream()
                 .filter(user -> ids.contains(user.getId()))
@@ -70,7 +70,7 @@ public class UserService {
     public List<User> getCommonFriends(long id, long otherId) {
         log.info("получены общие друзья пользователя с id - " + id + " и пользователя с id - " + otherId);
         return getUserFriends(id).stream()
-                .filter(user -> userStorage.getUserById(otherId).getFriends().contains(user.getId()))
+                .filter(user -> userStorage.getById(otherId).getFriends().contains(user.getId()))
                 .collect(Collectors.toList());
     }
 

@@ -32,13 +32,13 @@ public class FilmService {
         filmStorage.delete(id);
     }
 
-    public Film getFilmById(long id) {
-        return filmStorage.getFilmById(id);
+    public Film getById(long id) {
+        return filmStorage.getById(id);
     }
 
     public void addLikeToFilm(long id, long userId) {
         log.info("фильму с id - " + id + " добавлен лайк пользователя с id  - " + userId);
-        Film film = getFilmById(id);
+        Film film = getById(id);
         film.getLikes().add(userId);
         film.setRate(film.getRate() + 1);
         update(film);
@@ -46,7 +46,7 @@ public class FilmService {
 
     public void deleteLikeFromFilm(long id, long userId) {
         log.info("у фильма с id - " + id + " удален лайк пользователя с id  - " + userId);
-        Film film = getFilmById(id);
+        Film film = getById(id);
         film.getLikes().remove(userId);
         film.setRate(film.getRate() - 1);
         update(film);
@@ -70,6 +70,7 @@ public class FilmService {
             throw new ValidationException("получен объект фильма null");
         } else {
             if (film.getReleaseDate().isBefore(MIN_RELEASE_DATE)) {
+                log.info("дата релиза фильма раньше допустимой - " + film.getReleaseDate());
                 throw new ValidationException("дата релиза фильма раньше допустимой - " + film.getReleaseDate());
             }
         }
