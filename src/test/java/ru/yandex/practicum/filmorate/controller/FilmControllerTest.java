@@ -7,9 +7,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.filmorate.model.Mpa;
+
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -31,6 +35,8 @@ public class FilmControllerTest {
                 .releaseDate(LocalDate.of(1967, 3,25))
                 .duration(100)
                 .likes(new HashSet<>())
+                .genres(new LinkedHashSet<>())
+                .mpa(new Mpa( 1, "G"))
                 .build();
         String validFilm = objectMapper.writeValueAsString(film);
 
