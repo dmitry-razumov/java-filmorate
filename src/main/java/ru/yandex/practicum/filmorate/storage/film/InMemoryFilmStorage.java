@@ -4,8 +4,10 @@ import ru.yandex.practicum.filmorate.model.Film;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -41,8 +43,31 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
+    public List<Film> getMostPopularFilms(int count) {
+        return getAll().stream()
+                .sorted(Comparator.comparing(Film::getLikesCount).reversed())
+                .limit(count)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addLikeToFilm(long id, long userId) {
+        getById(id).getLikes().add(userId);
+    }
+
+    @Override
+    public void deleteLikeFromFilm(long id, long userId) {
+        getById(id).getLikes().remove(userId);
+    }
+
+    @Override
     public List<Film> getAll() {
         log.info("получены все фильмы");
         return new ArrayList<>(films.values());
+    }
+
+    @Override
+    public boolean isExistById(long id) {
+        return getAll().stream().anyMatch(film -> film.getId() == id);
     }
 }

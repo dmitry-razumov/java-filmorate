@@ -12,4 +12,6 @@ public interface Storage<T> {
     List<T> getAll();
 
     T getById(long id);
+
+    boolean isExistById(long id);
 }

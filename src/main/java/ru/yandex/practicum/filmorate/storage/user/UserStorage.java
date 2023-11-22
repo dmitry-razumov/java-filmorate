@@ -4,4 +4,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.Storage;
 
 public interface UserStorage extends Storage<User> {
+    void addFriend(long id, long friendId);
+
+    void deleteFriend(long id, long friendId);
 }
