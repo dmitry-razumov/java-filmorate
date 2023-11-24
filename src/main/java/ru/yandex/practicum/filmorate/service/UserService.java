@@ -2,8 +2,8 @@ package ru.yandex.practicum.filmorate.service;
 
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
@@ -11,12 +11,9 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserService {
     private final UserStorage userStorage;
-
-    public UserService(@Qualifier("userDbStorage") UserStorage userStorage) {
-        this.userStorage = userStorage;
-    }
 
     public User create(User user) {
         validateUser(user);
@@ -53,18 +50,15 @@ public class UserService {
     }
 
     public List<User> getUserFriends(long id) {
-        Set<Long> ids = getById(id).getFriends();
-        log.info("получены друзья пользователя с id - " + id);
-        return getAll().stream()
-                .filter(user -> ids.contains(user.getId()))
-                .collect(Collectors.toList());
+        List<User> listUser = userStorage.getUserFriends(id);
+        log.info("получены друзья пользователя с id - " + id + " : " + listUser);
+        return listUser;
     }
 
     public List<User> getCommonFriends(long id, long otherId) {
-        log.info("получены общие друзья пользователя с id - " + id + " и пользователя с id - " + otherId);
-        return getUserFriends(id).stream()
-                .filter(user -> getById(otherId).getFriends().contains(user.getId()))
-                .collect(Collectors.toList());
+        List<User> listUser = userStorage.getCommonFriends(id, otherId);
+        log.info("получены общие друзья пользователя с id - " + id + " и пользователя с id - " + otherId + " : " + listUser);
+        return listUser;
     }
 
     private void validateUser(User user) {

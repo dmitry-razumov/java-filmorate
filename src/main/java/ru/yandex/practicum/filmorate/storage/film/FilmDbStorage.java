@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.storage.film;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-@Qualifier("filmDbStorage")
 public class FilmDbStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
 
@@ -145,7 +143,6 @@ public class FilmDbStorage implements FilmStorage {
 
     private Film mapRowToFilm(ResultSet resultSet, int rowNum) throws SQLException {
         LinkedHashSet<Genre> genres = new LinkedHashSet<>();
-        Set<Long> likes = new HashSet<>();
         Film film = Film.builder()
                 .id(resultSet.getLong("id"))
                 .name(resultSet.getString("name"))
@@ -155,7 +152,6 @@ public class FilmDbStorage implements FilmStorage {
                 .rate(resultSet.getInt("rate"))
                 .mpa(new Mpa(resultSet.getInt("mpa_id"), resultSet.getString("mpa_name")))
                 .genres(genres)
-                .likes(likes)
                 .build();
 
         Optional<String> optGenres = Optional.ofNullable(resultSet.getString("genres"));
@@ -163,13 +159,6 @@ public class FilmDbStorage implements FilmStorage {
             film.setGenres(Arrays.stream(optGenres.get().split(","))
                     .map(x -> new Genre(Integer.parseInt(x.split("-")[0]),x.split("-")[1]))
                     .collect(Collectors.toCollection(LinkedHashSet::new))
-            );
-        }
-        Optional<String> optLikes = Optional.ofNullable(resultSet.getString("likes"));
-        if (optLikes.isPresent()) {
-            film.setLikes(Arrays.stream(optLikes.get().split(","))
-                    .map(x -> Long.parseLong(x))
-                    .collect(Collectors.toSet())
             );
         }
         return film;

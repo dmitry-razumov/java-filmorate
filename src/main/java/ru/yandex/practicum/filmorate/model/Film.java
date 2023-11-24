@@ -1,9 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.Set;
 import lombok.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -27,12 +25,7 @@ public class Film {
     @Positive(message = "Длительность фильма должна быть больше 0")
     private long duration;
     private int rate = 0;
-    private Set<Long> likes = new HashSet<>();
     private LinkedHashSet<Genre> genres = new LinkedHashSet<>();
     @NotNull
     private Mpa mpa;
-
-    public int getLikesCount() {
-        return likes.size();
-    }
 }

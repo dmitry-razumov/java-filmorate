@@ -23,5 +23,4 @@ public class User {
     @NotNull(message = "дата рождения не может быть пустой")
     @PastOrPresent(message = "дата рождения не может быть в будущем")
     private LocalDate birthday;
-    private Set<Long> friends = new HashSet<>();
 }

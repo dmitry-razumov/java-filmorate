@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Builder
 public class Genre {
-    private final int id;
+    private int id;
     @NotBlank
-    private final String name;
+    private String name;
 }

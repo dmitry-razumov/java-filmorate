@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.storage.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -13,11 +12,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-@Qualifier("userDbStorage")
 @Slf4j
 public class UserDbStorage implements UserStorage {
     private final JdbcTemplate jdbcTemplate;
@@ -86,6 +83,20 @@ public class UserDbStorage implements UserStorage {
         return userList;
     }
 
+    @Override
+    public List<User> getUserFriends(long id) {
+        String sql = "SELECT * FROM USERS WHERE id IN (SELECT friend_id FROM FRIENDS WHERE user_id = ?)";
+        return jdbcTemplate.query(sql, this::mapRowToUser, id);
+    }
+
+    @Override
+    public List<User> getCommonFriends(long userId, long otherId) {
+        String sql = "SELECT * FROM USERS WHERE id IN (SELECT fu.friend_id FROM FRIENDS fu " +
+                "JOIN FRIENDS fo ON fu.friend_id = fo.friend_id " +
+                "WHERE fu.USER_ID = ? AND fo.USER_ID = ?)";
+        return jdbcTemplate.query(sql, this::mapRowToUser, userId, otherId);
+    }
+
     private User mapRowToUser(ResultSet resultSet, int rowNum) throws SQLException {
         Set<Long> friends = new HashSet<>();
         User user = User.builder()
@@ -94,16 +105,16 @@ public class UserDbStorage implements UserStorage {
                 .email(resultSet.getString("email"))
                 .login(resultSet.getString("login"))
                 .birthday(resultSet.getDate("birthday").toLocalDate())
-                .friends(friends)
+//                .friends(friends)
                 .build();
 
-        Optional<String> opt = Optional.ofNullable(resultSet.getString("friends"));
-        if (opt.isPresent()) {
-            user.setFriends(Arrays.stream(opt.get().split(","))
-                    .map(x -> Long.parseLong(x))
-                    .collect(Collectors.toSet())
-            );
-        }
+//        Optional<String> opt = Optional.ofNullable(resultSet.getString("friends"));
+//        if (opt.isPresent()) {
+//            user.setFriends(Arrays.stream(opt.get().split(","))
+//                    .map(x -> Long.parseLong(x))
+//                    .collect(Collectors.toSet())
+//            );
+//        }
         return user;
     }
 

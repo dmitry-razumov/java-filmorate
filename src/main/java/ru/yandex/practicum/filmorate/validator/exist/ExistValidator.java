@@ -1,7 +1,5 @@
 package ru.yandex.practicum.filmorate.validator.exist;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
@@ -10,28 +8,19 @@ import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.genre.GenreStorage;
 import ru.yandex.practicum.filmorate.storage.mpa.MpaStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 @Slf4j
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class ExistValidator implements ConstraintValidator<Exist, Object> {
     private final UserStorage userStorage;
     private final FilmStorage filmStorage;
     private final MpaStorage mpaStorage;
     private final GenreStorage genreStorage;
-    String type;
-
-    @Autowired
-    public ExistValidator(@Qualifier("userDbStorage") UserStorage userStorage,
-                          @Qualifier("filmDbStorage") FilmStorage filmStorage,
-                          MpaStorage mpaStorage, GenreStorage genreStorage) {
-        this.userStorage = userStorage;
-        this.filmStorage = filmStorage;
-        this.mpaStorage = mpaStorage;
-        this.genreStorage = genreStorage;
-    }
+    private String type;
 
     @Override
     public void initialize(Exist annotation) {

@@ -42,7 +42,6 @@ class FilmorateApplicationTests {
                 .login("user1login")
                 .email("user1@mail.com")
                 .birthday(LocalDate.of(1968, 4, 19))
-                .friends(new HashSet<>())
                 .build();
 
         user2 = User.builder()
@@ -51,7 +50,6 @@ class FilmorateApplicationTests {
                 .login("user2login")
                 .email("user2@mail.com")
                 .birthday(LocalDate.of(1978, 5, 13))
-                .friends(new HashSet<>())
                 .build();
 
         film1 = Film.builder()
@@ -61,7 +59,6 @@ class FilmorateApplicationTests {
                 .releaseDate(LocalDate.of(1967, 3, 25))
                 .duration(100)
                 .rate(4)
-                .likes(new HashSet<>())
                 .genres(new LinkedHashSet<>())
                 .mpa(new Mpa(1, "G"))
                 .build();
@@ -73,7 +70,6 @@ class FilmorateApplicationTests {
                 .releaseDate(LocalDate.of(2000, 5, 20))
                 .duration(120)
                 .rate(4)
-                .likes(new HashSet<>())
                 .genres(new LinkedHashSet<>())
                 .mpa(new Mpa(2, "PG"))
                 .build();
@@ -116,7 +112,6 @@ class FilmorateApplicationTests {
                 .name("otherName")
                 .email(user1.getEmail())
                 .birthday(user1.getBirthday())
-                .friends(new HashSet<>())
                 .build();
         userStorage.update(updatedUser);
         assertEquals(updatedUser, userStorage.getById(updatedUser.getId()));
@@ -130,11 +125,12 @@ class FilmorateApplicationTests {
 
     @Test
     void shouldAddUser2ToFriendsOfUser1AndDeleteFromFriends() {
+        List<User> friends = new ArrayList<>();
+        friends.add(user2);
         userStorage.addFriend(user1.getId(), user2.getId());
-        assertEquals(userStorage.getById(user1.getId()).getFriends(),
-                new HashSet<>(Arrays.asList(user2.getId())));
+        assertEquals(friends, userStorage.getUserFriends(user1.getId()));
         userStorage.deleteFriend(user1.getId(), user2.getId());
-        assertTrue(userStorage.getById(user1.getId()).getFriends().isEmpty());
+        assertTrue(userStorage.getUserFriends(user1.getId()).isEmpty());
     }
 
     @Test
@@ -158,7 +154,6 @@ class FilmorateApplicationTests {
                 .description(film1.getDescription())
                 .releaseDate(film1.getReleaseDate())
                 .duration(film1.getDuration())
-                .likes(new HashSet<>())
                 .genres(new LinkedHashSet<>())
                 .mpa(film1.getMpa())
                 .build();
