@@ -25,7 +25,7 @@ public class FilmController {
     }
 
     @GetMapping("/{id}")
-    public Film getById(@PathVariable @Exist(message = "film") long id) {
+    public Film getFilmById(@PathVariable @Exist(message = "film") long id) {
         log.info("GET /films/{" + id + "}");
         return filmService.getById(id);
     }

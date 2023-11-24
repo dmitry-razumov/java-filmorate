@@ -6,12 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class UserService {
     private final UserStorage userStorage;
 
@@ -38,40 +36,27 @@ public class UserService {
     }
 
     public void addFriend(long id, long friendId) {
+        userStorage.addFriend(id, friendId);
         User user = getById(id);
-        User friend = getById(friendId);
-        user.getFriends().add(friendId);
-        update(user);
         log.info("пользователю с id - " + id + " добавлен id друга - " + friendId + " user=" + user);
-        friend.getFriends().add(id);
-        update(friend);
-        log.info("другу с id - " + friendId + " добавлен id пользователя - " + id + " friend=" + friend);
     }
 
     public void deleteFriend(long id, long friendId) {
+        userStorage.deleteFriend(id, friendId);
         User user = getById(id);
-        user.getFriends().remove(friendId);
-        update(user);
         log.info("у пользователя с id - " + id + " удален id друга - " + friendId  + " user=" + user);
-        User friend = getById(friendId);
-        friend.getFriends().remove(id);
-        update(user);
-        log.info("у друга с id - " + friendId + " удален id пользователя - " + id + " friend=" + friend);
     }
 
     public List<User> getUserFriends(long id) {
-        Set<Long> ids = getById(id).getFriends();
-        log.info("получены друзья пользователя с id - " + id);
-        return getAll().stream()
-                .filter(user -> ids.contains(user.getId()))
-                .collect(Collectors.toList());
+        List<User> listUser = userStorage.getUserFriends(id);
+        log.info("получены друзья пользователя с id - " + id + " : " + listUser);
+        return listUser;
     }
 
     public List<User> getCommonFriends(long id, long otherId) {
-        log.info("получены общие друзья пользователя с id - " + id + " и пользователя с id - " + otherId);
-        return getUserFriends(id).stream()
-                .filter(user -> userStorage.getById(otherId).getFriends().contains(user.getId()))
-                .collect(Collectors.toList());
+        List<User> listUser = userStorage.getCommonFriends(id, otherId);
+        log.info("получены общие друзья пользователя с id - " + id + " и пользователя с id - " + otherId + " : " + listUser);
+        return listUser;
     }
 
     private void validateUser(User user) {
