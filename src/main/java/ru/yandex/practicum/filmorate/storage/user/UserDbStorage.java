@@ -98,24 +98,13 @@ public class UserDbStorage implements UserStorage {
     }
 
     private User mapRowToUser(ResultSet resultSet, int rowNum) throws SQLException {
-        Set<Long> friends = new HashSet<>();
-        User user = User.builder()
+        return User.builder()
                 .id(resultSet.getLong("id"))
                 .name(resultSet.getString("name"))
                 .email(resultSet.getString("email"))
                 .login(resultSet.getString("login"))
                 .birthday(resultSet.getDate("birthday").toLocalDate())
-//                .friends(friends)
                 .build();
-
-//        Optional<String> opt = Optional.ofNullable(resultSet.getString("friends"));
-//        if (opt.isPresent()) {
-//            user.setFriends(Arrays.stream(opt.get().split(","))
-//                    .map(x -> Long.parseLong(x))
-//                    .collect(Collectors.toSet())
-//            );
-//        }
-        return user;
     }
 
     @Override
