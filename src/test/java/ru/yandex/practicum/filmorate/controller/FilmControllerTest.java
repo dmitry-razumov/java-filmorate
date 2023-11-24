@@ -11,7 +11,6 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
