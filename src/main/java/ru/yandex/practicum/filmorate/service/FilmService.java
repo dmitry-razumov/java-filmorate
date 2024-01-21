@@ -7,9 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,31 +35,22 @@ public class FilmService {
     }
 
     public void addLikeToFilm(long id, long userId) {
+        filmStorage.addLikeToFilm(id, userId);
         log.info("фильму с id - " + id + " добавлен лайк пользователя с id  - " + userId);
-        Film film = getById(id);
-        film.getLikes().add(userId);
-        film.setRate(film.getRate() + 1);
-        update(film);
     }
 
     public void deleteLikeFromFilm(long id, long userId) {
+        filmStorage.deleteLikeFromFilm(id, userId);
         log.info("у фильма с id - " + id + " удален лайк пользователя с id  - " + userId);
-        Film film = getById(id);
-        film.getLikes().remove(userId);
-        film.setRate(film.getRate() - 1);
-        update(film);
     }
 
     public List<Film> getAll() {
         return filmStorage.getAll();
     }
 
-    public List<Film> getMostPopularFilms(int quantity) {
-        log.info("получено {} наиболее популярных фильмов", quantity);
-        return getAll().stream()
-                .sorted(Comparator.comparing(Film::getRate).reversed())
-                .limit(quantity)
-                .collect(Collectors.toList());
+    public List<Film> getMostPopularFilms(int count) {
+        log.info("получено {} наиболее популярных фильмов", count);
+        return filmStorage.getMostPopularFilms(count);
     }
 
     private void validateFilm(Film film) {
